@@ -7,9 +7,48 @@ $(document).ready(function() {
 			$(this).find('use').attr('xlink:href','#icon-menu');
 		}
 	});
-	$('#footer').attr('style','--bottom:' + $('#footer_bar').height() + 'px');
 	sortList();
 	main();
+	var startx, starty;
+    function getAngle(angx, angy) {
+        return Math.atan2(angy, angx) * 180 / Math.PI;
+    };
+    function getDirection(startx, starty, endx, endy) {
+        var angx = endx - startx;
+        var angy = endy - starty;
+        var result = 0;
+        if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+            return result;
+        }
+        var angle = getAngle(angx, angy);
+        if (angle >= -135 && angle <= -45) {
+            result = 1;
+        } else if (angle > 45 && angle < 135) {
+            result = 2;
+        }
+        return result;
+    }
+    document.addEventListener("touchstart", function(e) {
+        startx = e.touches[0].pageX;
+        starty = e.touches[0].pageY;
+    }, false);
+    document.addEventListener("touchend", function(e) {
+        var endx, endy;
+        endx = e.changedTouches[0].pageX;
+        endy = e.changedTouches[0].pageY;
+        var direction = getDirection(startx, starty, endx, endy);
+        switch (direction) {
+            case 0://未滑动，显示
+                break;
+            case 1://向上滑动，隐藏
+				$('body').find('#footer_bar').addClass('hidetime');
+                break;
+            case 2://向下滑动，显示
+				$('body').find('#footer_bar').removeClass('hidetime');
+                break;
+            default:
+        }
+    }, false);
 });
 function main(){
 	setImageLightGallery();
@@ -165,7 +204,7 @@ function ias(){
 	});
 }
 function showSidebar(){
-	$('#secondary').attr('style', '--bottom:' + $('#footer_bar').height() + 'px');
+	$('#secondary').attr('style', '--top:' + $('#header').height() + 'px');
 	if($('#secondary').hasClass('show')){
 		$('#secondary').removeClass('show');
 		$('#showSidebar').find('use').attr('xlink:href','#icon-swap');
