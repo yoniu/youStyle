@@ -1,0 +1,177 @@
+/*
+  模板设置
+  Author: https://www.200011.net
+  Date  : 2021.09.12
+*/
+.option-container{
+  position: fixed;
+  overflow-y: scroll;
+  width: 100vw;
+  height: 100vh;
+  top: 0; left: 0;
+  background-color: #fff;
+  margin: 0 auto!important;
+  padding: 0!important;
+  float: unset;
+  min-height: unset;
+  z-index: 999;
+}
+.theme-carsoul{
+  position: absolute;
+  top: 10vh;
+  left: 50%; transform: translateX(-50%);
+  color: #fff;
+}
+.theme-carsoul h2{
+  font-size: 2rem;
+  padding: 0;
+  margin: 0 auto;
+  line-height: 1;
+}
+.theme-carsoul span{
+  position: absolute;
+  right: -1.6rem;
+  top: -.5rem;
+  font-size: .8rem;
+}
+.route-link{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 30vh;
+  background-image: linear-gradient(90deg, rgba(30, 135, 240, .5), rgba(30, 135, 240, 1));
+}
+.route-link a{
+  position: relative;
+  display: block;
+  padding: .5rem .8rem;
+  color: #fff;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: .3s all ease-in-out;
+}
+.route-link a:hover{
+  background-color: rgba(255, 255, 255, .3);
+}
+.route-link a.current::after{
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 3px;
+  background-color: lightcyan;
+}
+.option-item-container{
+  width: 96%;
+  max-width: 800px;
+  margin: 0 auto;
+  max-height: 0;
+  overflow: hidden;
+  transform: translateX(-200%);
+  transition: .3s transform ease-in-out;
+}
+.option-item-container.current{
+  max-height: unset;
+  transform: translateX(0);
+}
+.typecho-option-submit{
+  width: 96%;
+  max-width: 800px;
+  margin: 1rem auto;
+  text-align: right;
+}
+.typecho-option-submit .primary, .typecho-option .primary{
+  background-color: rgba(30, 135, 240, 1);
+}
+#friend-setting{
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0 0 0 / 50%);
+  z-index: 9999;
+}
+.friend-setting-container{
+  background-color: #fff;
+  padding: .5rem;
+  border-radius: 5px;
+  max-width: 90vw;
+  width: 100%;
+  max-height: 90vh;
+}
+.friend-setting-title{
+  margin-bottom: .5rem;
+}
+.friend-setting-list{
+  display: grid;
+  grid-row-gap: .5rem;
+  max-height: 80vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.friend-setting-item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+.friend-setting-item>*{
+  flex: 0 1 auto;
+  width: 15%;
+}
+.friend-setting-item>*[name=description]{
+  flex: 1 1 auto;
+}
+.friend-setting-item>*:last-child{
+  width: 3rem;
+  margin-right: 0;
+}
+.friend-setting-save{
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: .5rem;
+}
+.friend-setting-save a{
+  margin-top: .5rem;
+  display: block;
+  padding: .3rem .8rem;
+  line-height: 1;
+  color: rgba(30, 135, 240, 1);
+  border-radius: 5px;
+}
+.friend-setting-save a:hover{
+  text-decoration: none;
+  background-color: rgba(30, 135, 240, .1);
+}
+/*   mobile mode   */
+@media screen and (max-width: 992px) { 
+  .route-link {
+    justify-content: flex-start;
+    align-items: flex-end;
+    overflow-x: scroll;
+    gap: .5rem;
+    padding-top: 20vh;
+  }
+  .route-link a {
+    flex: 0 0 auto;
+    padding: .3rem .5rem;
+    font-size: 1rem;
+  }
+  .friend-setting-item{
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .friend-setting-item>*{
+    width: 30%;
+    margin-bottom: .2rem;
+  }
+  .friend-setting-item>*[name=description], .friend-setting-item>*[name=url]{
+    width: 60%;
+    flex: 1 1 auto;
+  }
+}

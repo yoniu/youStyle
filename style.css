@@ -106,7 +106,7 @@ html {
 #header{
 	position: relative;
 	width: 100%;
-	z-index: 1;
+	z-index: 2;
 	background-color: var(--bg-primary);
 }
 .header-container{
@@ -115,6 +115,20 @@ html {
 	width: 96%;
 	padding: 1rem 0;
 	margin: 0 auto;
+	transition: all .3s ease-in-out;
+}
+#header.steep-header{
+	position: fixed;
+	top: 0;
+	background-color: transparent;
+	transition: all .3s ease-in-out;
+}
+#header.steep-header.background-black{
+	background-color: var(--bg-primary);
+	box-shadow: 0 -1px 10px var(--borderColor2);
+}
+#header.steep-header.background-black .header-container{
+	padding: .5rem 0;
 }
 .header-logo img{
 	/* https://s3.jpg.cm/2021/04/11/ym2mT.gif */
@@ -172,6 +186,15 @@ html {
 	text-decoration: none;
 	color: var(--text-primary);
 }
+#header.steep-header .header-right a{
+	color: var(--heightLight);
+}
+#header.steep-header.background-black  .header-right a{
+	color: var(--text-secondary);
+}
+#nav-menu{
+	gap: 1rem;
+}
 #nav-menu a{
 	position: relative;
 }
@@ -195,7 +218,6 @@ html {
 	height: 0;
 }
 #nav-menu a:last-child{
-	border-right: 1px solid var(--borderColor2);
 	margin-right: 1rem
 }
 #search-btn{
@@ -218,6 +240,8 @@ html {
 	background-color: var(--themeColorop);
 }
 .steep .slide-infoBox{
+	min-height: 100vh;
+	max-height: 100vh;
 	border-radius: 0px;
 }
 .slide-infoBox::before{
@@ -241,6 +265,9 @@ html {
     filter: blur(5px);
 	opacity: .9;
 	z-index: 0;
+}
+.steep .slide-infoBox::after{
+	background-attachment: fixed;
 }
 .infoBox{
 	position: absolute;
@@ -286,9 +313,18 @@ html {
 .container{
 	padding-top: 2rem;
 }
+.container.single-column{
+	padding-top: 0;
+	background-color: var(--bg-primary);
+}
 
 #main{
 	padding-right: 10px;
+}
+.single-column #main{
+	padding-right: 0;
+	max-width: 654px;
+	margin: 0 auto;
 }
 
 #secondary{
@@ -324,6 +360,9 @@ article{
     background-color: var(--bg-primary);
     padding: 15px;
 	margin-bottom: 1rem;
+}
+.single-column article{
+	padding-top: 30px;
 }
 .post-bigImage{
 	position: relative;
@@ -430,8 +469,8 @@ article{
 	object-fit: cover;
 	z-index: 0;
 }
-.sideImage-left{
-	padding-right: 1rem;
+.sideImage-right{
+	padding-left: 1rem;
 }
 .sideImage-left .post-title a{
 	color: var(--text-secondary);
@@ -470,6 +509,9 @@ article{
 }
 .post .post-t{
 	margin-bottom: 1rem;
+}
+.post-t[data-link]{
+	cursor: pointer;
 }
 .post-t .post-author-right{
 	color: var(--text-secondary);
@@ -523,11 +565,6 @@ article{
 }
 .collapse svg{
 	font-size: .9rem;
-}
-.collapseAim{
-	overflow: hidden;
-	max-height: var(--max-height);
-	transition: all .1s ease-out;
 }
 .embed-responsive {
     margin-top: 10px;
@@ -604,19 +641,53 @@ article{
 	border:0!important;
 	border-radius: 3px;
 }
-.more-pic{
-	display: flex;
-	align-items: center;
-	justify-content: center;
+
+.yoniu-photosets{
+	--border-radius: 5px;
+	position: relative;
+	display: grid;
+	overflow: hidden;
+	margin: .5rem auto 0;
+	grid-gap: .2rem;
+}
+.yoniu-photosets>a:not(.more-pic){
+	position: relative;
+	padding-top: 100%;
+	overflow: hidden;
+}
+.yoniu-photosets>a>img{
 	position: absolute;
-	font-size: 20px;
-	color: var(--heightLight);
 	top: 0;
 	left: 0;
 	height: 100%;
 	width: 100%;
-	background-color: rgba(0,0,0,.5);
-	border-radius: 3px;
+	object-fit: cover;
+	border: 1px solid var(--borderColor2)!important;
+	border-radius: var(--border-radius);
+}
+.yoniu-photosets-1>a{
+	padding-top: 66.6%!important;
+}
+.yoniu-photosets-2, .yoniu-photosets-4{
+	grid-template-columns: 1fr 1fr;
+}
+.yoniu-photosets-3{
+	grid-template-columns: 1fr 1fr 1fr;
+}
+.more-pic{
+	display: block;
+    position: absolute;
+    bottom: .5rem;
+    right: .5rem;
+    padding: .5rem .8rem;
+    line-height: 1;
+    color: var(--heightLight);
+    background-color: rgba(0,0,0,.8);
+    border-radius: var(--border-radius);
+}
+.more-pic:hover{
+    color: var(--heightLight);
+	text-decoration: none;
 }
 .dplayer-video-wrap .dplayer-video {
     max-height: 400px;
@@ -1008,13 +1079,19 @@ article{
 .yoniu-author-box-background{
 	position: relative;
 	border-radius: 3px;
+	padding-top: 40%;
 	overflow: hidden;
 	z-index: 0;
 }
-.yoniu-author-box-background::before{
+.steep .yoniu-author-box-background::before{
 	content: '';
-	padding-top: 40%;
-	float: left;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-image: linear-gradient(to top, rgba(0 0 0 / 50%), transparent 90%);
+	z-index: 1;
 }
 .yoniu-author-box-background::after{
 	content: '';
@@ -1030,6 +1107,7 @@ article{
     -ms-transform: scale(1.05);
 	-webkit-filter: blur(5px);
     filter: blur(5px);
+	z-index: 0;
 }
 .yoniu-author-box-content{
 	position: absolute;
@@ -1038,11 +1116,21 @@ article{
 	top: 50%;
 	transform: translate(-50%, -50%);
 }
+.steep .yoniu-author-box-content{
+    width: calc(100% - 2rem);
+    max-width: 1024px;
+	top: unset;
+    bottom: 2rem;
+    transform: translateX(-50%);
+}
 .yoniu-author-box-content-header-gravatar{
 	border: 5px solid var(--bg-primaryop);
 	width: 133px;
 	height: 133px;
 	margin-right: 1rem;
+}
+.steep .yoniu-author-box-content-header-gravatar{
+	margin-right: 2rem;
 }
 .yoniu-author-box-content-header-author{
 	color: var(--heightLight);
@@ -1097,6 +1185,17 @@ article{
 	content: '"';
 }
 
+/*   面包屑导航   */
+.breadcrumb{
+	margin-bottom: 1rem;
+	padding: .5rem 1rem;
+	background-color: var(--bg-primary);
+	border-radius: 3px;
+}
+.breadcrumb a{
+	color: var(--themeColor);
+	text-decoration: none;
+}
 
 /*   页脚   */
 #footer{
@@ -1144,6 +1243,7 @@ article{
 	bottom: 1rem;
 	flex-direction: column;
 	font-size: 1rem;
+	z-index: 2;
 }
 #footer_bar li{
 	padding: 0;
@@ -1180,6 +1280,9 @@ article{
 }
 .steep .post-header-content{
 	padding: 4rem 1rem;
+}
+.steep.single-no-image .post-header-content{
+	padding: 4rem 1rem 1rem;
 }
 .post-header-categories{
 	margin-bottom: 1rem;
@@ -1253,6 +1356,26 @@ article{
 	position: relative;
 	z-index: 1;
 }
+
+.single-column .post-author-box{
+	background-color: var(--bg-secondary);
+	border-radius: 3px;
+	margin-top: 1rem;
+	padding: 1rem;
+	text-decoration: none;
+}
+.single-column .post-author-avatar img{
+	width: 96px;
+	height: 96px;
+}
+.single-column .post-author-information h4{
+	margin-bottom: .5rem;
+	font-weight: bold;
+}
+.single-column .post-author-information .post-author-description{
+	color: var(--text-tertiary);
+}
+
 .post-tags{
 	margin-top: 1rem;
 }
@@ -1323,7 +1446,7 @@ article{
 }
 /*   文章格式   */
 .post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6 {
-    margin: 1rem 0;
+    margin: 0 0 .8rem;
     color: var(--text-secondary);
 }
 .post-content :not(pre)>code, .post-content :not(pre)>kbd, .post-content :not(pre)>samp {
@@ -1463,21 +1586,24 @@ article{
 	opacity: 1;
 }
 .yoniu-zhedie{
-    border-radius: 3px;
+	margin: 0;
     padding: 0;
     overflow: hidden;
+	box-shadow: 0 2px 8px var(--borderColor2);
 }
-.yoniu-zhedie .collapse {
+.yoniu-zhedie .zhediebtn {
     display: flex;
     margin-top: unset;
-    padding: 5px 10px;
-    background-color: var(--themeColor);
+    padding: 8px 14px;
+    background-color: var(--bg-primary);
     font-size: 1rem;
-    color: var(--heightLight);
+    color: var(--text-primary);
+	border-bottom: 1px solid var(--borderColor2);
 }
-.yoniu-zhedie .collapseAim {
-    padding: 5px 10px;
-    background-color: var(--bg-secondary);
+.yoniu-zhedie .uk-accordion-content {
+	margin: 0;
+    padding: 8px 14px;
+    background-color: var(--bg-primary);
     font-size: 1rem;
     color: var(--text-secondary);
 	transition: all .1s ease-out;
@@ -1679,6 +1805,74 @@ article{
 	border-left: 4px solid var(--themeColor);
 	border-right: 0px;
 }
+.yoniu-link-card{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1rem auto;
+	width: clamp(350px, calc(100% - 20px), 450px);
+	border: 1px solid var(--borderColor2);
+	border-radius: 16px;
+	text-decoration: none!important;
+	transition: none!important;
+	overflow: hidden;
+}
+.link-card-left{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 0 0 auto;
+	padding: 10px;
+	width: 104px;
+	height: 104px;
+	font-size: 84px;
+	line-height: 84px;
+	border-right: 1px solid var(--borderColor2);
+	color: var(--themeColorop);
+}
+.link-card-image{
+	flex: 0 1 auto;
+	border-right: 1px solid var(--borderColor2);
+}
+.link-card-image .link-card-img{
+	width: 128px;
+	background-image: var(--background);
+	background-size: cover;
+	background-position: 50% 50%;
+	overflow: hidden;
+}
+.link-card-image .link-card-img:before{
+	content: '';
+	padding-top: 100%;
+	float: left;
+}
+.link-card-right{
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	padding: 5px 10px;
+	line-height: 1.5rem;
+}
+.link-card-title{
+	color: var(--aColor);
+}
+.link-card-desc{
+	display: -webkit-box;
+	max-width: 100%;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	text-overflow: ellipsis;
+	color: var(--text-tertiary);
+}
+.link-card-tip{
+	color: var(--text-tertiary);
+	font-size: .8rem;
+}
+.yoniu-link-card:hover{
+	text-decoration: none!important;
+	background-color: var(--bg-secondary);
+}
 .post-near{
 	margin-bottom: 1rem;
 }
@@ -1711,6 +1905,28 @@ article{
     padding: .7rem 1rem;
 	color: var(--text-secondary);
     border-bottom: 1px solid var(--borderColor2);
+}
+.single-column .comment-title{
+	position: relative;
+	text-align: center;
+	border-bottom: 0;
+	font-size: 1.2rem;
+}
+.single-column .comment-title svg{
+	display: none;
+}
+.single-column .comment-title::after{
+    content: '';
+    position: absolute;
+    width: 5rem;
+    height: .6rem;
+    left: 50%;
+    bottom: .7rem;
+    background-color: var(--themeColor);
+    opacity: .3;
+    z-index: 0;
+    transform: skew(
+-20deg) translateX(-50%);
 }
 .comment-body{
 	margin-bottom: 2rem;
@@ -1843,6 +2059,9 @@ article{
 .comment-children-at:hover{
 	color: var(--text-secondary);
 	text-decoration: none;
+}
+.comment-author-box label{
+	flex: 0 0 auto;
 }
 .yoniu-comment-page{
 	list-style: none;
@@ -2094,7 +2313,7 @@ article{
 	transform: translateY(-100vh);
 	opacity: 0;
     transition: all .5s ease-out;
-	z-index: 99999;
+	z-index: 4;
 }
 #yoniu-login-framework.yoniu-login-framework-active{
 	opacity: 1;
@@ -2254,16 +2473,29 @@ article{
 		-webkit-box-sizing: border-box;
 		box-sizing: border-box;
 	}
+	#header.steep-header.background-black .header-container {
+		padding: .5rem 15px;
+	}
 	#nav-btn{
 		display: block;
 	}
 	#header {
 		position: sticky;
 		top: 0;
-		background-color: var(--bg-primaryop);
-		backdrop-filter: blur(20px);
+		background-color: var(--bg-primary);
 		box-shadow: 0 20px 20px 0 rgb(0 0 0 / 5%);
-		z-index: 99999;
+		z-index: 4;
+	}
+	#header.steep-header{
+		position: fixed;
+		background-color: transparent;
+		box-shadow: unset;
+	}
+	#header.background .header-right a {
+		color: var(--text-secondary);
+	}
+	#header.background{
+		background-color: var(--bg-primary);
 	}
 	.header-logo .text-logo {
 		font-size: 1.6rem;
@@ -2352,6 +2584,7 @@ article{
 	article{
 		border-radius: 0;
 		margin-bottom: .5rem;
+		padding-top: 15px;
 	}
 	.sort-nav{
 		overflow-x: scroll;
@@ -2485,6 +2718,9 @@ article{
 		height: 69px;
 		margin-right: .8rem;
 	}
+	.steep .yoniu-author-box-content-header-gravatar{
+		margin-right: .8rem;
+	}
 	.yoniu-author-box-content-header-name{
 		font-size: 1.3rem;
 		margin-bottom: .3rem;
@@ -2517,12 +2753,14 @@ article{
 		padding: 1.5rem 0;
 		font-size: .8rem;
 		color: var(--text-tertiary);
+		width: calc(100% - 2rem);
 	}
 	#footer_bar{
 		position: fixed;
-		left: 0;
-		right: 0;
-		bottom: 0;
+		left: 10px;
+		right: 10px;
+		bottom: 10px;
+		border-radius: 5px;
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: var(--bg-primary);
@@ -2541,8 +2779,8 @@ article{
 		width: unset;
 		height: unset;
 		border-radius: unset;
-		background-color: var(--bg-primary);
-		color: var(--text-tertiary);
+		background-color: transparent;
+		color: var(--text-secondary);
 	}
 	#footer_bar a:hover{
 		text-decoration: none;
@@ -2550,7 +2788,7 @@ article{
 		color: var(--text-tertiary);
 	}
 	#turnLight:hover{
-		background-color: var(--bg-primary)!important;
+		background-color: transparent!important;
 		color: var(--lightBtn)!important;
 	}
 	#footer_bar li{
@@ -2559,6 +2797,12 @@ article{
 	#footer_bar span{
 		font-size: .8rem;
 		transform: scale(.8);
+	}
+	.OwO .OwO-body {
+		right: -4rem!important;
+	}
+	.respond-list .OwO .OwO-body {
+		right: -9rem!important;
 	}
 	.uk-tooltip{
 		display: none!important;
@@ -2638,5 +2882,19 @@ article{
 	.yoniu-login-close {
 		left: auto;
 		right: auto;
+	}
+	.breadcrumb{
+		display: none;
+	}
+	.single-column .post-author-avatar img{
+		width: 64px;
+		height: 64px;
+	}
+	.single-column .post-author-information h4 {
+		font-size: 1.1rem;
+		margin-bottom: .2rem;
+	}
+	.single-column .post-author-information .post-author-description {
+		font-size: .9rem;
 	}
 }
